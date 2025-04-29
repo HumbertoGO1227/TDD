@@ -2,6 +2,7 @@ package com.humberto.versiculos.controller;
 
 import com.humberto.versiculos.model.Versiculo;
 import com.humberto.versiculos.service.VersiculoService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,16 @@ public class VersiculoController {
     }
 
     @GetMapping
-    public List<Versiculo> listar() {
-        return service.listarTodos();
+    public ResponseEntity<List<Versiculo>> listar() {
+        List<Versiculo> versiculos = service.listarTodos();
+        return ResponseEntity.ok(versiculos);
     }
 
-    @GetMapping("/data")
-    public List<Versiculo> buscarPorData(@RequestParam("data") LocalDate data) {
-        return service.buscarPorData(data);
+    @GetMapping("/data/{data}")
+    public ResponseEntity<List<Versiculo>> buscarPorData(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+        List<Versiculo> versiculos = service.buscarPorData(data);
+        return ResponseEntity.ok(versiculos);
     }
 
     @PutMapping("/{id}")
@@ -45,6 +49,6 @@ public class VersiculoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletarVersiculo(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // <-- Corrigido para retornar 204
+        return ResponseEntity.noContent().build();
     }
 }

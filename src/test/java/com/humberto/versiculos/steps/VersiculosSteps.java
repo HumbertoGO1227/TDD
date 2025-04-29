@@ -7,19 +7,22 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 public class VersiculosSteps {
 
-    private VersiculoService versiculoService = new VersiculoService(null); // Mock ou ajustar conforme necessário
+    @Autowired
+    private VersiculoService versiculoService;
+
     private Versiculo versiculo;
     private List<Versiculo> versiculos;
     private Versiculo versiculoSalvo;
-    private boolean versiculoDeletado;
 
     @Given("um novo versículo do tipo EVANGELHO")
     public void um_novo_versiculo_do_tipo_evangelho() {
